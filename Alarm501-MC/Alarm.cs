@@ -3,7 +3,7 @@ using System.Text;
 using System.Timers;
 using Timer = System.Timers.Timer;
 
-namespace Alarm501_MC1
+namespace Alarm501_MC
 {
     public delegate void AlarmSoundedHandler(Alarm sender);
 

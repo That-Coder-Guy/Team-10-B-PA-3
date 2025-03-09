@@ -1,4 +1,4 @@
-﻿namespace Alarm501_MC1
+﻿namespace Alarm501_MC
 {
     public enum AlarmSound
     {

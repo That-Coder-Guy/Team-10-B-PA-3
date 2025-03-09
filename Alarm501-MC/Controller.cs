@@ -1,9 +1,7 @@
-﻿using Microsoft.Toolkit.Uwp.Notifications;
-using System.Security.Policy;
-
-namespace Alarm501_MC1
+﻿namespace Alarm501_MC
 {
-    #region Delegate
+
+    #region Controller Delegate
     public delegate void UpdateAlarmList(string[] alarmStrings);
 
     public delegate void UpdateStateLabel(string message);

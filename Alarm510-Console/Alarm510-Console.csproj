@@ -8,4 +8,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Alarm501-MC\Alarm501-MC.csproj" />
+  </ItemGroup>
+
 </Project>

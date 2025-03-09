@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using Alarm501_MC;
 
-namespace Alarm510_Console
+namespace Alarm501_Console
 {
     #region View Delegates
     public delegate void AddAlarm();

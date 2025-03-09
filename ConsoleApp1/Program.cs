@@ -1,5 +1,5 @@
 ﻿using Alarm501_MC;
-namespace Alarm510_Console
+namespace Alarm501_Console
 {
     class Program
     {
