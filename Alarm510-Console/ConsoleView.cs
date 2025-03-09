@@ -6,21 +6,27 @@ using System.Threading.Tasks;
 
 namespace Alarm510_Console
 {
+
+
+
+
     public class ConsoleView
     {
         /// <summary>
         /// The default constructor 
         /// </summary>
-        public ConsoleView() 
+        public ConsoleView()
         {
             Console.WriteLine("Welcome to CIS 501 - Alarms");
             Console.WriteLine("___________________________");
             Console.WriteLine("This is the current alarm list:\n");
             // Call delegate here to update the list of alarms
 
-          
+
 
         }
+        private int _alarmAmount = 0;
+        private string[] lastList = { "" };
 
         /// <summary>
         /// Updates the alarms in the console view
@@ -32,7 +38,24 @@ namespace Alarm510_Console
             {
                 Console.WriteLine(alarms[i]);
             }
+            _alarmAmount = alarms.Length;
+            Array.Copy(alarms, lastList, alarms.Length);
         }
+
+        /// <summary>
+        /// Updates the current state ie: alarm going off , quiet, snoozed etc
+        /// </summary>
+        public void UpdateStateLabelMethod(string message)
+        {
+            Console.WriteLine("\nThis is the current alarm list:\n");
+            UpdateAlarmView(lastList);
+            Console.WriteLine(message + "\n");
+
+
+
+
+        }
+
 
         /// <summary>
         /// The instructions on how to perform certain operations in the alarm
@@ -58,17 +81,17 @@ namespace Alarm510_Console
         /// </summary>
         public string AwaitUserInput()
         {
-            Console.Write("Input here: ");
+            Console.Write("Input alarm instruction: ");
             string input = "";
             do
             {
                 input = Console.ReadLine() ?? "";
 
             } while (!ValidInput(input.ToLower()));
-            
+
             return input;
-            
-            
+
+
         }
         /// <summary>
         /// Checks if the user input is an acceptable input 
@@ -77,14 +100,14 @@ namespace Alarm510_Console
         /// <returns></returns>
         public bool ValidInput(string input)
         {
-            
+
             if (input != null && input.Length > 0)
             {
                 if (input.Equals("add") || input.Equals("edit") || input.Equals("stop") || input.Equals("snooze") || input.Equals("exit") || input.Equals("help"))
                 {
                     return true;
                 }
-                
+
             }
             Console.Write("\nInvalid input, try again.\nInput here: ");
             return false;
@@ -99,16 +122,16 @@ namespace Alarm510_Console
             switch (input)
             {
                 case "add":
-                    // call add instructions
+                    AddAlarmInstructions();
                     break;
                 case "edit":
                     // call edit instructions
                     break;
                 case "stop":
-                    // call stop instructions
+                    StopAlarms();
                     break;
                 case "snooze":
-                    // call snooze instructions
+                    SnoozeAlarms();
                     break;
                 case "help":
                     AlarmInstructions();
@@ -117,5 +140,61 @@ namespace Alarm510_Console
         }
 
 
+        /// <summary>
+        /// The instructions on how to add an alarm from the console view
+        /// </summary>
+        public void AddAlarmInstructions()
+        {
+            if (_alarmAmount >= 5)
+            {
+                Console.WriteLine("You have too many alarms. Please choose a different instruction.\n");
+                return;
+            }
+
+            string format = "yyyy-MM-dd hh:mm tt"; // this is the specific format for alarm datetime. only in 12 hour format.
+
+            Console.Write($"Please enter in the alarm time, example being 2025-03-09 09:45 AM. '{format}'.\n This is only in 12-hour format!\nEnter here: ");
+            string input = Console.ReadLine();
+
+            DateTime time;
+            if (DateTime.TryParseExact(input, format, null, System.Globalization.DateTimeStyles.None, out time))
+            {
+                Console.WriteLine($"Success! Alarm set for {time}");
+            }
+            else
+            {
+                Console.Write($"Failed. Please try again with this format {format}\nEnter here: ");
+            }
+
+        }
+
+
+        /// <summary>
+        /// The method that calls the StopAlarmsDelegate
+        /// </summary>
+        public void StopAlarms()
+        {
+
+            // StopAlarm();
+
+
+        }
+
+        /// <summary>
+        /// The method that calls the Snooze Alarm delegate
+        /// </summary>
+        public void SnoozeAlarms()
+        {
+            //SnoozeAlarm();
+        }
+
+
+        public void AddEditAlarmInstructions()
+        {
+
+        }
+
     }
 }
+
+
