@@ -1,4 +1,7 @@
-﻿namespace Alarm501_MC
+﻿using Microsoft.Toolkit.Uwp.Notifications;
+using System.Security.Policy;
+
+namespace Alarm501_MC1
 {
     #region Delegate
     public delegate void UpdateAlarmList(string[] alarmStrings);
@@ -12,6 +15,8 @@
     public delegate void EnableAlarmDismissal(bool enabled);
 
     public delegate void EnableAlarmCreation(bool enabled);
+
+    public delegate void ShowNotification(string title, string message);
     #endregion
 
     public class Controller
@@ -32,6 +37,8 @@
         public EnableAlarmDismissal? EnableAlarmDismissalDelegate { get; set; }
 
         public EnableAlarmCreation? EnableAlarmCreationDelegate { get; set; }
+
+        public ShowNotification? ShowNotificationDelegate { get; set; }
         #endregion
 
         #region Methods
@@ -45,10 +52,7 @@
         {
             UpdateStateLabelDelegate?.Invoke($"{sender.Sound}");
             EnableAlarmDismissalDelegate?.Invoke(true);
-            new ToastContentBuilder()
-                .AddText("An alarm went off!")
-                .AddText($"{sender.Sound}")
-                .Show();
+            ShowNotificationDelegate?.Invoke("An alarm went off!", $"{sender.Sound}");
         }
 
         public void EditAlarmHandler(int index)

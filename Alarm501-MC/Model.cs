@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Text.Json;
 
-namespace Alarm501_MC
+namespace Alarm501_MC1
 {
     public class Model
     {
