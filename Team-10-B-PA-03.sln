@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35122.118
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alarm501-GUI", "Alarm501-GUI\Alarm501-GUI.csproj", "{3D380740-C288-47D8-B42F-40693BD599E7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Alarm501-GUI", "Alarm501-GUI\Alarm501-GUI.csproj", "{3D380740-C288-47D8-B42F-40693BD599E7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alarm510-Console", "Alarm510-Console\Alarm510-Console.csproj", "{3B00BA3F-3191-47A6-8EF1-EC35C2F31265}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Alarm510-Console", "Alarm510-Console\Alarm510-Console.csproj", "{3B00BA3F-3191-47A6-8EF1-EC35C2F31265}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alarm501-MC", "Alarm501-MC\Alarm501-MC.csproj", "{E743C2EE-F7B6-4E9F-8C55-2BE7BE3C5932}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Alarm501-MC", "Alarm501-MC\Alarm501-MC.csproj", "{A34D6E29-4F38-4A65-8C83-2070C616AD58}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{3B00BA3F-3191-47A6-8EF1-EC35C2F31265}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3B00BA3F-3191-47A6-8EF1-EC35C2F31265}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3B00BA3F-3191-47A6-8EF1-EC35C2F31265}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E743C2EE-F7B6-4E9F-8C55-2BE7BE3C5932}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E743C2EE-F7B6-4E9F-8C55-2BE7BE3C5932}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E743C2EE-F7B6-4E9F-8C55-2BE7BE3C5932}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E743C2EE-F7B6-4E9F-8C55-2BE7BE3C5932}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A34D6E29-4F38-4A65-8C83-2070C616AD58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A34D6E29-4F38-4A65-8C83-2070C616AD58}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A34D6E29-4F38-4A65-8C83-2070C616AD58}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A34D6E29-4F38-4A65-8C83-2070C616AD58}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
