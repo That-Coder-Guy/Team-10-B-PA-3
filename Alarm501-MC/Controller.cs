@@ -13,11 +13,11 @@ namespace Alarm501_MC
 
         public ModifyAlarmDetails? ModifyAlarmDetailsDelegate { get; set; }
 
-        public EnableAlarmDismissal? EnableAlarmDismissalDelegate { get; set; }
+        //public EnableAlarmDismissal? EnableAlarmDismissalDelegate { get; set; }
 
         public DisableAlarmCreation? DisableAlarmCreationDelegate { get; set; }
 
-        public ShowNotification? ShowNotificationDelegate { get; set; }
+        public ShowAlarmSounded? ShowAlarmSoundedDelegate { get; set; }
         #endregion
 
         #region Static Methods
@@ -49,8 +49,8 @@ namespace Alarm501_MC
 
         private void OnAlarmSounded(Alarm sender)
         {
-            EnableAlarmDismissalDelegate?.Invoke();
-            ShowNotificationDelegate?.Invoke($"{sender.Sound}");
+            //EnableAlarmDismissalDelegate?.Invoke();
+            ShowAlarmSoundedDelegate?.Invoke($"{sender.Sound}");
         }
 
         public void EditAlarmHandler(int index)
@@ -73,14 +73,14 @@ namespace Alarm501_MC
         public void SnoozeAlarmHandler()
         {
             _model.SnoozeAll();
-            ShowNotificationDelegate?.Invoke(string.Empty);
+            ShowAlarmSoundedDelegate?.Invoke(string.Empty);
         }
 
         public void StopAlarmHandler()
         {
             _model.StopAll();
 
-            ShowNotificationDelegate?.Invoke(string.Empty);
+            ShowAlarmSoundedDelegate?.Invoke(string.Empty);
         }
 
         public void ModifyAlarmHandler(bool isConfirmed, int index, TimeSpan time, bool[] schedule, AlarmSound sound, uint snoozePeriod, bool enabled)

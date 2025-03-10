@@ -29,9 +29,8 @@ namespace Alarm501_GUI
                 controller.ApplicationExitHandler);
 
             controller.UpdateAlarmListDelegate = view.UpdateAlarmListHandler;
-            controller.ShowNotificationDelegate = view.ShowNotificationHandler;
+            controller.ShowAlarmSoundedDelegate = view.ShowAlarmSoundedHandler;
             controller.ModifyAlarmDetailsDelegate = view.ModifyAlarmDetailsHandler;
-            controller.EnableAlarmDismissalDelegate = view.EnableAlarmDismissalHandler;
             controller.DisableAlarmCreationDelegate = view.DisableAlarmCreationHandler;
 
             Application.Run(view);

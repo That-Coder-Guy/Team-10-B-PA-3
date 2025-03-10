@@ -44,27 +44,18 @@ namespace Alarm501_GUI
 
         public void UpdateAlarmListHandler(string[] alarmStrings)
         {
+
+            uxEditAlarm.Enabled = false;
             uxAlarmList.Items.Clear();
             uxAlarmList.Items.AddRange(alarmStrings);
         }
-
+        
+        // TODO: Refactor this method signature to only take in a bool and an Alarm
         public void ModifyAlarmDetailsHandler(int index, TimeSpan time, bool[] schedule, AlarmSound sound, uint snoozePeriod, bool enabled)
         {
-            // TODO: Refactor this method signature to only take in a bool and an Alarm
             AddEditAlarm addEditAlarm = new AddEditAlarm(index, time, schedule, sound, snoozePeriod, enabled);
             bool isConfirmed = addEditAlarm.ShowDialog() == DialogResult.OK;
             _finishedModifyingAlarmDelegate.Invoke(isConfirmed, addEditAlarm.AlarmIndex, addEditAlarm.Time, addEditAlarm.Schedule, addEditAlarm.Sound, addEditAlarm.SnoozePeriod, addEditAlarm.AlarmEnabled);
-
-            uxEditAlarm.Enabled = !isConfirmed;
-        }
-
-        public void EnableAlarmDismissalHandler()
-        {
-            Invoke(new Action(() =>
-            {
-                uxSnoozeAlarm.Enabled = true;
-                uxStopAlarm.Enabled = true;
-            }));
         }
 
         public void DisableAlarmCreationHandler()
@@ -72,7 +63,7 @@ namespace Alarm501_GUI
             uxAddAlarm.Enabled = false;
         }
 
-        public void ShowNotificationHandler(string message)
+        public void ShowAlarmSoundedHandler(string message)
         {
             Invoke(new Action(() => {
                 uxStateLabel.Text = message;
@@ -80,6 +71,11 @@ namespace Alarm501_GUI
 
             if (message != string.Empty)
             {
+                Invoke(new Action(() => {
+                    uxStopAlarm.Enabled = true;
+                    uxSnoozeAlarm.Enabled = true;
+                }));
+
                 // TODO: Add something to notify the user if the window is not on top
                 string title = "An alarm went off!";
                 Debug.Print($"{title} : {message}");  // Remove this line
