@@ -1,28 +1,8 @@
 ﻿using Alarm501_MC;
 using System.Diagnostics;
 
-
-
 namespace Alarm501_GUI
 {
-    #region View Delegates
-    public delegate void AddAlarm();
-
-    public delegate void EditAlarm(int index);
-
-    public delegate void AlarmSelected(int index);
-
-    public delegate void SnoozeAlarm();
-
-    public delegate void StopAlarm();
-
-    public delegate void EditFormClosed(DialogResult result, int index, TimeSpan time, bool[] schedule, AlarmSound sound, uint snoozePeriod, bool enabled);
-
-    public delegate void FormShown();
-
-    public delegate void FormClosed();
-    #endregion
-
     public partial class Alarm501 : Form
     {
         #region Fields
@@ -36,11 +16,11 @@ namespace Alarm501_GUI
 
         private StopAlarm _stopAlarmDelegate;
 
-        private EditFormClosed _editFromClosedDelegate;
+        private ModifyAlarm _editFromClosedDelegate;
         
-        private FormShown _fromShownDelegate;
+        private ApplicationStart _fromShownDelegate;
 
-        private FormClosed _formClosedDelegate;
+        private ApplicationExit _formClosedDelegate;
         #endregion
 
         #region Methods
@@ -50,9 +30,9 @@ namespace Alarm501_GUI
             AlarmSelected selectedDelegate,
             SnoozeAlarm snoozeDelegate,
             StopAlarm stopDelegate,
-            EditFormClosed editClosedDelegate,
-            FormShown shownDelegate,
-            FormClosed closedDelegate)
+            ModifyAlarm editClosedDelegate,
+            ApplicationStart shownDelegate,
+            ApplicationExit closedDelegate)
         {
             InitializeComponent();
 
@@ -72,18 +52,12 @@ namespace Alarm501_GUI
             uxAlarmList.Items.AddRange(alarmStrings);
         }
 
-        public void UpdateStateLabelHandler(string message)
-        {
-            Invoke(new Action(() => {
-                uxStateLabel.Text = message;
-            }));
-        }
-
         public void OpenAlarmEditFormHandler(int index, TimeSpan time, bool[] schedule, AlarmSound sound, uint snoozePeriod, bool enabled)
         {
+            // TODO: Refactor this method signature to only take in a bool and an Alarm
             AddEditAlarm addEditAlarm = new AddEditAlarm(index, time, schedule, sound, snoozePeriod, enabled);
-            DialogResult result = addEditAlarm.ShowDialog();
-            _editFromClosedDelegate.Invoke(result, addEditAlarm.AlarmIndex, addEditAlarm.Time, addEditAlarm.Schedule, addEditAlarm.Sound, addEditAlarm.SnoozePeriod, addEditAlarm.AlarmEnabled);
+            bool isConfirmed = addEditAlarm.ShowDialog() == DialogResult.OK;
+            _editFromClosedDelegate.Invoke(isConfirmed, addEditAlarm.AlarmIndex, addEditAlarm.Time, addEditAlarm.Schedule, addEditAlarm.Sound, addEditAlarm.SnoozePeriod, addEditAlarm.AlarmEnabled);
         }
 
         public void EnableAlarmEditingHandler(bool enabled)
@@ -105,9 +79,19 @@ namespace Alarm501_GUI
             uxAddAlarm.Enabled = enable;
         }
 
-        public void ShowNotificationHandler(string title, string message)
+        public void ShowNotificationHandler(string message)
         {
-            Debug.Print("Hello");
+            Invoke(new Action(() => {
+                uxStateLabel.Text = message;
+            }));
+
+            if (message != string.Empty)
+            {
+                // TODO: Add something to notify the user if the window is not on top
+                string title = "An alarm went off!";
+                Debug.Print($"{title} : {message}");  // Remove this line
+            }
+            
         }
 
         private void OnEditAlarmClicked(object sender, EventArgs e)
@@ -122,7 +106,8 @@ namespace Alarm501_GUI
 
         private void OnAlarmSelected(object sender, EventArgs e)
         {
-            _alarmSelectedDelegate.Invoke(uxAlarmList.SelectedIndex);
+            uxEditAlarm.Enabled = true;
+            //_alarmSelectedDelegate.Invoke(uxAlarmList.SelectedIndex);
         }
 
         private void OnSnoozeAlarmClicked(object sender, EventArgs e)

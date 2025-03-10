@@ -7,24 +7,6 @@ using Alarm501_MC;
 
 namespace Alarm501_Console
 {
-    #region View Delegates
-    public delegate void AddAlarm();
-
-    public delegate void EditAlarm(int index);
-
-    public delegate void AlarmSelected(int index);
-
-    public delegate void SnoozeAlarm();
-
-    public delegate void StopAlarm();
-
-    public delegate void EditFormClosed(DialogResult result, int index, TimeSpan time, bool[] schedule, AlarmSound sound, uint snoozePeriod, bool enabled);
-
-    public delegate void FormShown();
-
-    public delegate void FormClosed();
-    #endregion
-
     public class ConsoleView
     {
         #region Fields
@@ -38,7 +20,7 @@ namespace Alarm501_Console
 
         private StopAlarm _stopAlarmDelegate;
 
-        private EditFormClosed _editFromClosedDelegate;
+        private ModifyAlarm _editFromClosedDelegate;
 
         private FormShown _fromShown;
 
@@ -55,7 +37,7 @@ namespace Alarm501_Console
             AlarmSelected selectAlarm,
             SnoozeAlarm snoozeAlarm,
             StopAlarm stopAlarm,
-            EditFormClosed editFormClose,
+            ModifyAlarm editFormClose,
             FormShown showForm,
             FormClosed closeForm)
         {
