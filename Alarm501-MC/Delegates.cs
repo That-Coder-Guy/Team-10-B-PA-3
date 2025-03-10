@@ -5,13 +5,11 @@
 
     public delegate void EditAlarm(int index);
 
-    public delegate void AlarmSelected(int index);
-
     public delegate void SnoozeAlarm();
 
     public delegate void StopAlarm();
 
-    public delegate void ModifyAlarm(bool isConfirmed, int index, TimeSpan time, bool[] schedule, AlarmSound sound, uint snoozePeriod, bool enabled);
+    public delegate void FinishedModifyingAlarm(bool isConfirmed, int index, TimeSpan time, bool[] schedule, AlarmSound sound, uint snoozePeriod, bool enabled);
 
     public delegate void ApplicationStart();
 
@@ -23,12 +21,10 @@
 
     public delegate void ShowNotification(string message);
 
-    public delegate void OpenAlarmEditForm(int index, TimeSpan time, bool[] schedule, AlarmSound sound, uint snoozePeriod, bool enabled);
+    public delegate void ModifyAlarmDetails(int index, TimeSpan time, bool[] schedule, AlarmSound sound, uint snoozePeriod, bool enabled);
 
-    public delegate void EnableAlarmEditing(bool enabled);  // GUI specific
+    public delegate void EnableAlarmDismissal();
 
-    public delegate void EnableAlarmDismissal(bool enabled);  // GUI specific
-
-    public delegate void EnableAlarmCreation(bool enabled);  // GUI specific
+    public delegate void DisableAlarmCreation();
     #endregion
 }

@@ -22,19 +22,17 @@ namespace Alarm501_GUI
             Alarm501 view = new Alarm501(
                 controller.EditAlarmHandler,
                 controller.AddAlarmHandler,
-                controller.AlarmSelectedHandler,
                 controller.SnoozeAlarmHandler,
                 controller.StopAlarmHandler,
-                controller.EditFromClosedHandler,
+                controller.ModifyAlarmHandler,
                 controller.ApplicationStartHandler,
                 controller.ApplicationExitHandler);
 
             controller.UpdateAlarmListDelegate = view.UpdateAlarmListHandler;
             controller.ShowNotificationDelegate = view.ShowNotificationHandler;
-            controller.OpenAlarmEditFormDelegate = view.OpenAlarmEditFormHandler;
-            controller.EnableAlarmEditingDelegate = view.EnableAlarmEditingHandler;
+            controller.ModifyAlarmDetailsDelegate = view.ModifyAlarmDetailsHandler;
             controller.EnableAlarmDismissalDelegate = view.EnableAlarmDismissalHandler;
-            controller.EnableAlarmCreationDelegate = view.EnableAlarmCreationHandler;
+            controller.DisableAlarmCreationDelegate = view.DisableAlarmCreationHandler;
 
             Application.Run(view);
         }

@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-using System.Reflection;
-using static System.Net.Mime.MediaTypeNames;
+﻿using System.Reflection;
 
 namespace Alarm501_MC
 {
@@ -13,13 +11,11 @@ namespace Alarm501_MC
         #region Properties
         public UpdateAlarmList? UpdateAlarmListDelegate { get; set; }
 
-        public OpenAlarmEditForm? OpenAlarmEditFormDelegate { get; set; }
-
-        public EnableAlarmEditing? EnableAlarmEditingDelegate { get; set; }
+        public ModifyAlarmDetails? ModifyAlarmDetailsDelegate { get; set; }
 
         public EnableAlarmDismissal? EnableAlarmDismissalDelegate { get; set; }
 
-        public EnableAlarmCreation? EnableAlarmCreationDelegate { get; set; }
+        public DisableAlarmCreation? DisableAlarmCreationDelegate { get; set; }
 
         public ShowNotification? ShowNotificationDelegate { get; set; }
         #endregion
@@ -53,19 +49,19 @@ namespace Alarm501_MC
 
         private void OnAlarmSounded(Alarm sender)
         {
-            EnableAlarmDismissalDelegate?.Invoke(true);
+            EnableAlarmDismissalDelegate?.Invoke();
             ShowNotificationDelegate?.Invoke($"{sender.Sound}");
         }
 
         public void EditAlarmHandler(int index)
         {
             Alarm alarm = _model.Alarms[index];
-            OpenAlarmEditFormDelegate?.Invoke(index, alarm.Time, alarm.Schedule, alarm.Sound, alarm.SnoozePeriod, alarm.Enabled);
+            ModifyAlarmDetailsDelegate?.Invoke(index, alarm.Time, alarm.Schedule, alarm.Sound, alarm.SnoozePeriod, alarm.Enabled);
         }
 
         public void AddAlarmHandler()
         {
-            OpenAlarmEditFormDelegate?.Invoke(
+            ModifyAlarmDetailsDelegate?.Invoke(
                 -1,
                 new TimeSpan(9, 30, 0),
                 [false, true, true, true, true, true, false],
@@ -74,16 +70,10 @@ namespace Alarm501_MC
                 false);
         }
 
-        public void AlarmSelectedHandler(int index)
-        {
-            EnableAlarmEditingDelegate?.Invoke(true);
-        }
-
         public void SnoozeAlarmHandler()
         {
             _model.SnoozeAll();
             ShowNotificationDelegate?.Invoke(string.Empty);
-            EnableAlarmDismissalDelegate?.Invoke(false);
         }
 
         public void StopAlarmHandler()
@@ -91,7 +81,6 @@ namespace Alarm501_MC
             _model.StopAll();
 
             ShowNotificationDelegate?.Invoke(string.Empty);
-            EnableAlarmDismissalDelegate?.Invoke(false);
         }
 
         public void ModifyAlarmHandler(bool isConfirmed, int index, TimeSpan time, bool[] schedule, AlarmSound sound, uint snoozePeriod, bool enabled)
@@ -111,11 +100,10 @@ namespace Alarm501_MC
                 {
                     _model.CreateNewAlarm(time, schedule, sound, snoozePeriod, enabled);
                 }
-
-                EnableAlarmEditingDelegate?.Invoke(false);
+                
                 if (_model.HasMaximiumAlarms)
                 {
-                    EnableAlarmCreationDelegate?.Invoke(false);
+                    DisableAlarmCreationDelegate?.Invoke();
                 }
                 UpdateAlarmListDelegate?.Invoke(_model.AlarmsToStrings());
             }
@@ -123,11 +111,9 @@ namespace Alarm501_MC
 
         public void ApplicationStartHandler()
         {
-            EnableAlarmEditingDelegate?.Invoke(false);
-            EnableAlarmDismissalDelegate?.Invoke(false);
             if (_model.HasMaximiumAlarms)
             {
-                EnableAlarmCreationDelegate?.Invoke(false);
+                DisableAlarmCreationDelegate?.Invoke();
             }
             UpdateAlarmListDelegate?.Invoke(_model.AlarmsToStrings());
         }

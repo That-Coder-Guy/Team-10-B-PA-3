@@ -20,7 +20,7 @@ namespace Alarm501_Console
 
         private StopAlarm _stopAlarmDelegate;
 
-        private ModifyAlarm _editFromClosedDelegate;
+        private FinishedModifyingAlarm _editFromClosedDelegate;
 
         private FormShown _fromShown;
 
@@ -37,7 +37,7 @@ namespace Alarm501_Console
             AlarmSelected selectAlarm,
             SnoozeAlarm snoozeAlarm,
             StopAlarm stopAlarm,
-            ModifyAlarm editFormClose,
+            FinishedModifyingAlarm editFormClose,
             FormShown showForm,
             FormClosed closeForm)
         {
