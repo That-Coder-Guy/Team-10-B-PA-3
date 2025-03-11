@@ -14,32 +14,32 @@ namespace Alarm501_Console
 
         private EditAlarm _editAlarmDelegate;
 
-        private AlarmSelected _alarmSelectedDelegate;
-
         private SnoozeAlarm _snoozeAlarmDelegate;
 
         private StopAlarm _stopAlarmDelegate;
 
-        private FinishedModifyingAlarm _editFromClosedDelegate;
+        private FinishedModifyingAlarm _finishedModifyingAlarmDelegate;
 
-        private FormShown _fromShown;
+        private ApplicationStart _applicationStartDelegate;
 
-        private FormClosed _formClosed;
+        private ApplicationExit _applicationExitDelegate;
+
+
+        private string[] lastList = { "" };
         #endregion
 
-
+        #region Methods
         /// <summary>
         /// The default constructor 
         /// </summary>
         public ConsoleView(
-            AddAlarm add,
-            EditAlarm edit,
-            AlarmSelected selectAlarm,
-            SnoozeAlarm snoozeAlarm,
-            StopAlarm stopAlarm,
-            FinishedModifyingAlarm editFormClose,
-            FormShown showForm,
-            FormClosed closeForm)
+            EditAlarm editDelegate,
+            AddAlarm addDelegate,
+            SnoozeAlarm snoozeDelegate,
+            StopAlarm stopDelegate,
+            FinishedModifyingAlarm finishedModifyingDelegate,
+            ApplicationStart startDelegate,
+            ApplicationExit exitDelegate)
         {
             Console.WriteLine("Welcome to CIS 501 - Alarms");
             Console.WriteLine("___________________________");
@@ -47,25 +47,16 @@ namespace Alarm501_Console
             // Call delegate here to update the list of alarms
 
             // Subscribe delegates to the view methods
-            _addAlarmDelegate = add;
-            _editAlarmDelegate = edit;
-            _alarmSelectedDelegate = selectAlarm;
-            _snoozeAlarmDelegate = snoozeAlarm;
-            _stopAlarmDelegate = stopAlarm;
-            _editFromClosedDelegate = editFormClose;            
-            _fromShown = showForm;
-            _formClosed = closeForm;
-
-
-
-
-
-
+            _editAlarmDelegate = editDelegate;
+            _addAlarmDelegate = addDelegate;
+            _snoozeAlarmDelegate = snoozeDelegate;
+            _stopAlarmDelegate = stopDelegate;
+            _finishedModifyingAlarmDelegate = finishedModifyingDelegate;
+            _applicationStartDelegate = startDelegate;
+            _applicationExitDelegate = exitDelegate;
+            
 
         }
-
-        private int _alarmAmount = 0;
-        private string[] lastList = { "" };
 
         /// <summary>
         /// Updates the alarms in the console view
@@ -77,7 +68,6 @@ namespace Alarm501_Console
             {
                 Console.WriteLine(alarms[i]);
             }
-            _alarmAmount = alarms.Length;
             Array.Copy(alarms, lastList, alarms.Length);
         }
 
@@ -89,10 +79,6 @@ namespace Alarm501_Console
             Console.WriteLine("\nThis is the current alarm list:\n");
             UpdateAlarmView(lastList);
             Console.WriteLine(message + "\n");
-
-
-
-
         }
 
 
@@ -184,7 +170,7 @@ namespace Alarm501_Console
         /// </summary>
         public void AddAlarmInstructions()
         {
-            if (_alarmAmount >= 5)
+            if ( >= 5)
             {
                 Console.WriteLine("You have too many alarms. Please choose a different instruction.\n");
                 return;
@@ -232,6 +218,26 @@ namespace Alarm501_Console
         {
 
         }
+        
+        public void ShowAlarmSoundedHandler(string message)
+        {
+            throw new NotImplementedException();
+        }
 
+        public void UpdateAlarmListHandler(string[] alarmStrings)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DisableAlarmCreationHandler()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ModifyAlarmDetailsHandler(int index, TimeSpan time, bool[] schedule, AlarmSound sound, uint snoozePeriod, bool enabled)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
     }
 }
