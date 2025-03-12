@@ -6,6 +6,7 @@
         Beacon,
         Chimes,
         Circuit,
-        Reflection
+        Reflection,
+            NoSound
     }
 }
