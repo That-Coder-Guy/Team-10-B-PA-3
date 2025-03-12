@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Alarm501_MC;
+﻿using Alarm501_MC;
 
 namespace Alarm501_Console
 {
@@ -75,17 +70,17 @@ namespace Alarm501_Console
         /// </summary>
         public void AlarmInstructions()
         {
-            Console.WriteLine("\nTo add an alarm, type 'add'.");
+            Console.WriteLine("\nType 'add' to add an alarm.");
 
-            Console.WriteLine("To edit an alarm, type 'edit'.");
+            Console.WriteLine("Type 'edit', to edit an alarm.");
 
-            Console.WriteLine("To stop an alarm from going off, type 'stop'.");
+            Console.WriteLine("Type 'stop' to stop an alarm from going off.");
 
-            Console.WriteLine("To snooze an alarm, type 'snooze'.");
+            Console.WriteLine("Type 'snooze' to snooze an alarm.");
 
-            Console.WriteLine("To get instructions for the console, type 'help'.");
+            Console.WriteLine("Type 'help' to get instructions for the console.");
 
-            Console.WriteLine("To fully exit the program, type 'exit'.\n");
+            Console.WriteLine("Type 'exit' to fully exit the program, \n");
         }
         
         /// <summary>
