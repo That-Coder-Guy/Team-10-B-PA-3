@@ -24,9 +24,10 @@ namespace Alarm501_Console
 
         private ApplicationExit _applicationExitDelegate;
 
-
         private string[] lastList = { "", "", "", "", "" };
+
         private int _amount = 0;
+
         private bool _maxAlarms = false;
         #endregion
 
@@ -57,9 +58,7 @@ namespace Alarm501_Console
             _applicationExitDelegate = exitDelegate;
 
         }
-
         
-
         /// <summary>
         /// Updates the current state ie: alarm going off , quiet, snoozed etc
         /// </summary>
@@ -70,8 +69,7 @@ namespace Alarm501_Console
             UpdateAlarmListHandler(lastList);
             Console.WriteLine(message + "\n");
         }
-
-
+        
         /// <summary>
         /// The instructions on how to perform certain operations in the alarm
         /// </summary>
@@ -89,8 +87,7 @@ namespace Alarm501_Console
 
             Console.WriteLine("To fully exit the program, type 'exit'.\n");
         }
-
-
+        
         /// <summary>
         /// Waits for the user to input a command
         /// </summary>
@@ -198,10 +195,7 @@ namespace Alarm501_Console
         /// </summary>
         public void StopAlarms()
         {
-
             _stopAlarmDelegate();
-
-
         }
 
         /// <summary>
@@ -221,7 +215,6 @@ namespace Alarm501_Console
             UpdateAlarmListHandler(lastList);
             Console.WriteLine(message);*/
             UpdateAlarmListHandler(lastList, message);
-            
         }
 
         public void UpdateAlarmListHandler(string[] alarms)
@@ -331,13 +324,14 @@ namespace Alarm501_Console
 
         private bool[] ReturnAlarmSchedule()
         {
+            // TODO: Add input validation so that only a string of 7 letters is accepted.
             int index;
             bool[] schedule = new bool[7];
-            Console.Write("Enter in the days you want the alarm to be active for. Example(TFFFFF) for only monday active.\nEnter here: ");
+            Console.Write("Enter in the days you want the alarm to be active for. Example(FTFFFFF) for only Monday active.\nEnter here: ");
             string scheduleInput = Console.ReadLine() ?? "";
             while (scheduleInput.Length == 0 || scheduleInput.Length > 7)
             {
-                Console.Write("Invalid input, try again Example(TFFFFF).\nEnter here: ");
+                Console.Write("Invalid input, try again Example (FTFFFFF).\nEnter here: ");
                 scheduleInput = Console.ReadLine() ?? "";
             }
             index = 0;
@@ -358,6 +352,23 @@ namespace Alarm501_Console
 
         private AlarmSound ReturnAlarmSound()
         {
+            Console.WriteLine("Please input what sound you want from the following list.");
+            List<string> soundNames = Enum.GetNames<AlarmSound>().ToList();
+            soundNames.ForEach(Console.WriteLine);
+
+            Console.Write("\nEnter here: ");
+            string input = Console.ReadLine() ?? "";
+
+            AlarmSound alarmSound;
+            while (!Enum.TryParse(input, true, out alarmSound))
+            {
+                Console.Write("Invalid input, try again from the list\nEnter here: ");
+                input = Console.ReadLine() ?? "";
+            }
+
+            return alarmSound;
+
+            /*
             string[] sounds = new string[6];
             int index = 0;
             Console.Write("Please input what sound you want from the following list in exact type case..\n");
@@ -397,18 +408,19 @@ namespace Alarm501_Console
                     break;
             }
             return alarmSound;
+            */
         }
 
         private uint ReturnAlarmSnoozePeriod()
         {
-            Console.Write("Enter in the snooze period in minutes from 0 - 30.\nEnter here: ");
-            int snoozePeriod = Int32.Parse(Console.ReadLine() ?? "");
-            while (snoozePeriod < 0 || snoozePeriod > 30)
+            Console.Write("Enter in the snooze period in minutes from 1 - 30.\nEnter here: ");
+            uint snoozePeriod = uint.Parse(Console.ReadLine() ?? "");
+            while (snoozePeriod < 1 || snoozePeriod > 30)
             {
-                Console.Write("Invalid input, please try again from 0 - 30 minutes.\nEnter here: ");
-                snoozePeriod = Int32.Parse(Console.ReadLine() ?? "");
+                Console.Write("Invalid input, please try again from 1 - 30 minutes.\nEnter here: ");
+                snoozePeriod = uint.Parse(Console.ReadLine() ?? "");
             }
-            return (uint)snoozePeriod;
+            return snoozePeriod;
         }
 
         private bool ReturnAlarmEnabled()
