@@ -170,12 +170,6 @@ namespace Alarm501_Console
         /// </summary>
         public void AddAlarmInstructions()
         {
-            if ( >= 5)
-            {
-                Console.WriteLine("You have too many alarms. Please choose a different instruction.\n");
-                return;
-            }
-
             string format = "yyyy-MM-dd hh:mm tt"; // this is the specific format for alarm datetime. only in 12 hour format.
 
             Console.Write($"Please enter in the alarm time, example being 2025-03-09 09:45 AM. '{format}'.\n This is only in 12-hour format!\nEnter here: ");

@@ -12,7 +12,7 @@ namespace Alarm501_Console
                 controller.AddAlarmHandler,
                 controller.SnoozeAlarmHandler,
                 controller.StopAlarmHandler,
-                controller.ModifyAlarmHandler,
+                controller.FinishedModifyAlarmHandler,
                 controller.ApplicationStartHandler,
                 controller.ApplicationExitHandler);
 
