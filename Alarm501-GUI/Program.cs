@@ -24,7 +24,7 @@ namespace Alarm501_GUI
                 controller.AddAlarmHandler,
                 controller.SnoozeAlarmHandler,
                 controller.StopAlarmHandler,
-                controller.ModifyAlarmHandler,
+                controller.FinishedModifyAlarmHandler,
                 controller.ApplicationStartHandler,
                 controller.ApplicationExitHandler);
 

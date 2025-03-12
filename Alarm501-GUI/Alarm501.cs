@@ -75,10 +75,6 @@ namespace Alarm501_GUI
                     uxStopAlarm.Enabled = true;
                     uxSnoozeAlarm.Enabled = true;
                 }));
-
-                // TODO: Add something to notify the user if the window is not on top
-                string title = "An alarm went off!";
-                Debug.Print($"{title} : {message}");  // Remove this line
             }
             
         }

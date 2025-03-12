@@ -12,32 +12,10 @@ namespace Alarm501_MC
         public UpdateAlarmList? UpdateAlarmListDelegate { get; set; }
 
         public ModifyAlarmDetails? ModifyAlarmDetailsDelegate { get; set; }
-
-        //public EnableAlarmDismissal? EnableAlarmDismissalDelegate { get; set; }
-
+        
         public DisableAlarmCreation? DisableAlarmCreationDelegate { get; set; }
 
         public ShowAlarmSounded? ShowAlarmSoundedDelegate { get; set; }
-        #endregion
-
-        #region Static Methods
-        private static bool IsConsoleApp()
-        {
-            return Environment.UserInteractive &&
-                Console.OpenStandardInput(1) != Stream.Null;
-        }
-
-        private static bool IsWinFromsApp()
-        {
-            foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
-            {
-                if (assembly.GetName().Name is string name && name.Equals("System.Windows.Forms", StringComparison.OrdinalIgnoreCase))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
         #endregion
 
         #region Methods
@@ -49,7 +27,6 @@ namespace Alarm501_MC
 
         private void OnAlarmSounded(Alarm sender)
         {
-            //EnableAlarmDismissalDelegate?.Invoke();
             ShowAlarmSoundedDelegate?.Invoke($"{sender.Sound}");
         }
 
@@ -83,7 +60,7 @@ namespace Alarm501_MC
             ShowAlarmSoundedDelegate?.Invoke(string.Empty);
         }
 
-        public void ModifyAlarmHandler(bool isConfirmed, int index, TimeSpan time, bool[] schedule, AlarmSound sound, uint snoozePeriod, bool enabled)
+        public void FinishedModifyAlarmHandler(bool isConfirmed, int index, TimeSpan time, bool[] schedule, AlarmSound sound, uint snoozePeriod, bool enabled)
         {
             if (isConfirmed)
             {
