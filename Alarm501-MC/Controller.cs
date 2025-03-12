@@ -87,7 +87,7 @@ namespace Alarm501_MC
         {
             if (isConfirmed)
             {
-                if (index >= 0)
+                if (index >= 0) 
                 {
                     Alarm alarm = _model.Alarms[index];
                     alarm.Time = time;
@@ -115,13 +115,15 @@ namespace Alarm501_MC
             {
                 DisableAlarmCreationDelegate?.Invoke();
             }
-            UpdateAlarmListDelegate?.Invoke(_model.AlarmsToStrings());
+              UpdateAlarmListDelegate?.Invoke(_model.AlarmsToStrings());
+           // UpdateAlarmListDelegate(_model.AlarmsToStrings());
         }
-
+        
         public void ApplicationExitHandler()
         {
             _model.SaveAlarms();
         }
+
         #endregion
     }
 }

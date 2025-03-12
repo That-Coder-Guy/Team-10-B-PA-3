@@ -21,20 +21,18 @@ namespace Alarm501_Console
             controller.ModifyAlarmDetailsDelegate = view.ModifyAlarmDetailsHandler;
             controller.DisableAlarmCreationDelegate = view.DisableAlarmCreationHandler;
 
+            view.ApplicationStartup();
+
             view.AlarmInstructions();
             while (true)
             {
-                
+
                 string input = view.AwaitUserInput();
 
-                if (input.Equals("exit"))
-                {
-                    Environment.Exit(0);
-                }
-                view.Manager(input);
 
+                view.Manager(input);
             }
-            
+
         }
     }
 }

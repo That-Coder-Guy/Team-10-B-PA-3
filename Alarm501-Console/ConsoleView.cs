@@ -25,7 +25,9 @@ namespace Alarm501_Console
         private ApplicationExit _applicationExitDelegate;
 
 
-        private string[] lastList = { "" };
+        private string[] lastList = { "", "", "", "", "" };
+
+        private bool _maxAlarms = false;
         #endregion
 
         #region Methods
@@ -42,8 +44,7 @@ namespace Alarm501_Console
             ApplicationExit exitDelegate)
         {
             Console.WriteLine("Welcome to CIS 501 - Alarms");
-            Console.WriteLine("___________________________");
-            Console.WriteLine("This is the current alarm list:\n");
+
             // Call delegate here to update the list of alarms
 
             // Subscribe delegates to the view methods
@@ -54,30 +55,19 @@ namespace Alarm501_Console
             _finishedModifyingAlarmDelegate = finishedModifyingDelegate;
             _applicationStartDelegate = startDelegate;
             _applicationExitDelegate = exitDelegate;
-            
 
         }
 
-        /// <summary>
-        /// Updates the alarms in the console view
-        /// </summary>
-        /// <param name="alarms">the list of alarms</param>
-        public void UpdateAlarmView(string[] alarms)
-        {
-            for (int i = 0; i < alarms.Length; i++)
-            {
-                Console.WriteLine(alarms[i]);
-            }
-            Array.Copy(alarms, lastList, alarms.Length);
-        }
+        
 
         /// <summary>
         /// Updates the current state ie: alarm going off , quiet, snoozed etc
         /// </summary>
         public void UpdateStateLabelMethod(string message)
         {
-            Console.WriteLine("\nThis is the current alarm list:\n");
-            UpdateAlarmView(lastList);
+            Console.WriteLine("\nThis is the current alarm list" +
+                ":\n");
+            UpdateAlarmListHandler(lastList);
             Console.WriteLine(message + "\n");
         }
 
@@ -134,7 +124,7 @@ namespace Alarm501_Console
                 }
 
             }
-            Console.Write("\nInvalid input, try again.\nInput here: ");
+            Console.Write("\nInvalid input, try again.\nInput alarm instruction: ");
             return false;
         }
 
@@ -161,6 +151,10 @@ namespace Alarm501_Console
                 case "help":
                     AlarmInstructions();
                     break;
+                case "exit":
+                    _applicationExitDelegate();
+                    Environment.Exit(0);
+                    break;
             }
         }
 
@@ -170,28 +164,117 @@ namespace Alarm501_Console
         /// </summary>
         public void AddAlarmInstructions()
         {
-            if ( >= 5)
+            if (_maxAlarms)
             {
                 Console.WriteLine("You have too many alarms. Please choose a different instruction.\n");
                 return;
             }
 
-            string format = "yyyy-MM-dd hh:mm tt"; // this is the specific format for alarm datetime. only in 12 hour format.
-
-            Console.Write($"Please enter in the alarm time, example being 2025-03-09 09:45 AM. '{format}'.\n This is only in 12-hour format!\nEnter here: ");
-            string input = Console.ReadLine() ?? "";
-
-            DateTime time;
-            if (DateTime.TryParseExact(input, format, null, System.Globalization.DateTimeStyles.None, out time))
-            {
-                Console.WriteLine($"Success! Alarm set for {time}");
+            Console.Write("Enter in the hour the alarm should be set off (in 24 hour format. 18 = 6PM. 6 = 6AM).\nEnter here: ");
+            int hour;
+            while (!int.TryParse(Console.ReadLine(), out hour) || hour > 24 || hour < 0) {
+                Console.Write("Invalid input. Please enter a valid hour: ");
             }
-            else
+
+            Console.Write("Enter in the minute the alarm should be set off.\nEnter here: ");
+            int minute;
+            while (!int.TryParse(Console.ReadLine(), out minute) || minute > 60 || minute < 0)
             {
-                Console.Write($"Failed. Please try again with this format {format}\nEnter here: ");
+                Console.Write("Invalid input. Please enter a valid minute: ");
             }
+
+            Console.Write("Enter in the second the alarm should be set off.\nEnter here: ");
+            int second;
+            while (!int.TryParse(Console.ReadLine(), out second) || second > 60 || second < 0)
+            {
+                Console.Write("Invalid input. Please enter a valid second: ");
+            }
+            TimeSpan time = new TimeSpan(hour, minute, second);
+
+
+            bool[] schedule = new bool[7];
+            Console.Write("Enter in the days you want the alarm to be active for. Example(TFFFFF) for only monday active.\nEnter here: ");
+            string scheduleInput = Console.ReadLine() ?? "";
+            while (scheduleInput.Length == 0 || scheduleInput.Length > 7)
+            {
+                Console.Write("Invalid input, try again Example(TFFFFF).\nEnter here: ");
+                scheduleInput = Console.ReadLine() ?? "";
+            }
+            int index = 0;
+            foreach (char c in scheduleInput.ToUpper())
+            {
+                if (c == 'T')
+                {
+                    schedule[index] = true;
+                }
+                else
+                {
+                    schedule[index] = false;
+                }
+                index++;
+            }
+
+            string[] sounds = new string[5];
+            index = 0;
+            Console.Write("Please input what sound you want from the following list in exact type case..\n");
+            foreach (AlarmSound s in Enum.GetValues(typeof(AlarmSound)))
+            {
+                Console.WriteLine(s.ToString());
+                sounds[index] = s.ToString();
+                index++;
+            }
+            Console.Write("\nEnter here: ");
+            string sound = Console.ReadLine() ?? "";
+            while (sound.Length == 0 || !sounds.Contains(sound)) 
+            {
+                Console.Write("Invalid input, try again from the list\nEnter here: ");
+                sound = Console.ReadLine() ?? "";
+            }
+            AlarmSound alarmSound = AlarmSound.Radar;
+            switch (sound)
+            {
+                case "Radar":
+                    alarmSound = AlarmSound.Radar; 
+                    break;
+                case "Beacon":
+                    alarmSound = AlarmSound.Beacon;
+                    break;
+                case "Chimes":
+                    alarmSound = AlarmSound.Chimes;
+                    break;
+                case "Circuit":
+                    alarmSound = AlarmSound.Circuit;
+                    break;
+                case "Reflection":
+                    alarmSound = AlarmSound.Reflection;
+                    break;
+            }
+
+            Console.Write("Enter in the snooze period in minutes from 0 - 30.\nEnter here: ");
+            int snoozePeriod = Int32.Parse(Console.ReadLine() ?? "");
+            while (snoozePeriod < 0 || snoozePeriod > 30)
+            {
+                Console.Write("Invalid input, please try again from 0 - 30 minutes.\nEnter here: ");
+                snoozePeriod = Int32.Parse(Console.ReadLine() ?? "");
+            }
+
+            string enabled;
+            Console.Write("Do you want this alarm to be enabled? (Y/N): ");
+            enabled = Console.ReadLine() ?? "";
+            while (enabled.ToUpper() != "Y" && enabled.ToUpper() != "N")
+            {
+                Console.Write("Invalid input, try again. (Y/N): ");
+                enabled = Console.ReadLine() ?? "";
+            }
+            bool alarmEnabled;
+            if (enabled.ToUpper() == "Y") { alarmEnabled = true; }
+            else { alarmEnabled = false; }
+            _finishedModifyingAlarmDelegate(true, -1, time, schedule, alarmSound, (uint)snoozePeriod, alarmEnabled);
+
 
         }
+
+
 
 
         /// <summary>
@@ -200,7 +283,7 @@ namespace Alarm501_Console
         public void StopAlarms()
         {
 
-            // StopAlarm();
+            _stopAlarmDelegate();
 
 
         }
@@ -210,7 +293,7 @@ namespace Alarm501_Console
         /// </summary>
         public void SnoozeAlarms()
         {
-            //SnoozeAlarm();
+            _snoozeAlarmDelegate();
         }
 
 
@@ -221,22 +304,58 @@ namespace Alarm501_Console
         
         public void ShowAlarmSoundedHandler(string message)
         {
-            throw new NotImplementedException();
+            // throw new NotImplementedException();
+            /*Console.WriteLine("\n-------------------------------");
+            Console.WriteLine("This is the current alarm list:\n");
+            Console.WriteLine("-------------------------------");
+            UpdateAlarmListHandler(lastList);
+            Console.WriteLine(message);*/
+            UpdateAlarmListHandler(lastList, message);
+            
         }
 
-        public void UpdateAlarmListHandler(string[] alarmStrings)
+        public void UpdateAlarmListHandler(string[] alarms)
         {
-            throw new NotImplementedException();
+            Console.WriteLine("\n-------------------------------");
+            Console.WriteLine("This is the current alarm list:\n");
+            Console.WriteLine("-------------------------------");
+            for (int i = 0; i < alarms.Length; i++)
+            {
+                Console.WriteLine(alarms[i]);
+            }
+            Array.Copy(alarms, lastList, alarms.Length);
         }
+
+        public void UpdateAlarmListHandler(string[] alarms , string msg)
+        {
+            Console.WriteLine("\n-------------------------------");
+            Console.WriteLine("This is the current alarm list:\n");
+            Console.WriteLine("-------------------------------");
+            for (int i = 0; i < alarms.Length; i++)
+            {
+                Console.WriteLine(alarms[i]);
+            }
+            Array.Copy(alarms, lastList, alarms.Length);
+            Console.WriteLine(msg);
+            Console.Write("\nInput alarm instruction: ");
+        }
+
 
         public void DisableAlarmCreationHandler()
         {
-            throw new NotImplementedException();
+            _maxAlarms = true;
+
+           // throw new NotImplementedException();
         }
 
         public void ModifyAlarmDetailsHandler(int index, TimeSpan time, bool[] schedule, AlarmSound sound, uint snoozePeriod, bool enabled)
         {
             throw new NotImplementedException();
+        }
+
+        public void ApplicationStartup()
+        {
+            _applicationStartDelegate();
         }
         #endregion
     }
