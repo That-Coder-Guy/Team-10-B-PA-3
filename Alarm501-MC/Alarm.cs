@@ -122,7 +122,7 @@ namespace Alarm501_MC
             if (Time.Hours >= 12) builder.Append("pm");
             else builder.Append("am");
 
-            builder.Append("\t ");
+            builder.Append(new string(' ', 12 - builder.Length));
             builder.Append(Enabled ? "On" : "Off");
             return builder.ToString();
         }

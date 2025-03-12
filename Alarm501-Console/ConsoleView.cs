@@ -44,7 +44,7 @@ namespace Alarm501_Console
             ApplicationStart startDelegate,
             ApplicationExit exitDelegate)
         {
-            Console.WriteLine("Welcome to CIS 501 - Alarms");
+            Console.WriteLine("Welcome to CIS 501 - Alarms\n");
 
             // Call delegate here to update the list of alarms
 
@@ -98,6 +98,7 @@ namespace Alarm501_Console
             do
             {
                 input = (Console.ReadLine() ?? "").ToLower();
+                Console.WriteLine();
 
             } while (!ValidInput(input));
 
@@ -122,7 +123,7 @@ namespace Alarm501_Console
                 }
 
             }
-            Console.Write("\nInvalid input, try again.\nInput alarm instruction: ");
+            Console.Write("Invalid input, try again.\nInput alarm instruction: ");
             return false;
         }
 
@@ -210,7 +211,7 @@ namespace Alarm501_Console
         {
             // throw new NotImplementedException();
             /*Console.WriteLine("\n-------------------------------");
-            Console.WriteLine("This is the current alarm list:\n");
+            Console.WriteLine("This is the current alam list:\n");
             Console.WriteLine("-------------------------------");
             UpdateAlarmListHandler(lastList);
             Console.WriteLine(message);*/
@@ -219,27 +220,37 @@ namespace Alarm501_Console
 
         public void UpdateAlarmListHandler(string[] alarms)
         {
-            Console.WriteLine("\n-------------------------------");
-            Console.WriteLine("This is the current alarm list:\n");
-            Console.WriteLine("-------------------------------");
+            Console.WriteLine("+--------------------------------+");
+            Console.WriteLine("| This is the current alarm list |");
+            Console.WriteLine("+--------------------------------+");
             for (int i = 0; i < alarms.Length; i++)
             {
-                Console.WriteLine((i + 1) + ") " + alarms[i]);
+                //34 characters long  Make sure you accounted for the #s
+                string alarm = $"| {i + 1}) {alarms[i]}";
+                Console.Write($"| {i + 1}) {alarms[i]}");
+                Console.Write(new string(' ', 33 - alarm.Length));
+                Console.WriteLine("|");
             }
-            
+            Console.WriteLine("+--------------------------------+");
+
             Array.Copy(alarms, lastList, alarms.Length);
         }
 
         public void UpdateAlarmListHandler(string[] alarms , string msg)
         {
-            Console.WriteLine("\n-------------------------------");
-            Console.WriteLine("This is the current alarm list:\n");
-            Console.WriteLine("-------------------------------");
+            Console.WriteLine("+--------------------------------+");
+            Console.WriteLine("| This is the current alarm list |");
+            Console.WriteLine("+--------------------------------+");
             for (int i = 0; i < alarms.Length; i++)
             {
-                Console.WriteLine((i + 1) + ") " + alarms[i]);
+                //34 characters long  Make sure you accounted for the #s
+                string alarm = $"| {i + 1}) {alarms[i]}";
+                Console.Write($"| {i + 1}) {alarms[i]}");
+                Console.Write(new string(' ', 33 - alarm.Length));
+                Console.WriteLine("|");
             }
-            
+            Console.WriteLine("+--------------------------------+");
+
             Array.Copy(alarms, lastList, alarms.Length);
             Console.WriteLine(msg);
             Console.Write("\nInput alarm instruction: ");
@@ -248,8 +259,6 @@ namespace Alarm501_Console
         public void DisableAlarmCreationHandler()
         {
             _maxAlarms = true;
-
-           // throw new NotImplementedException();
         }
 
         public void ModifyAlarmDetailsHandler(int index, TimeSpan time, bool[] schedule, AlarmSound sound, uint snoozePeriod, bool enabled)
@@ -258,16 +267,18 @@ namespace Alarm501_Console
                 string input;
                 do
                 {
+                    Console.WriteLine("\n------------------------------------------------------");
                     Console.WriteLine("Please choose from the following alarm settings to edit: ");
                     Console.WriteLine("Edit alarm time, type 'time'.");
                     Console.WriteLine("Edit alarm schedule, type 'schedule'.");
                     Console.WriteLine("Edit alarm sound, type 'sound'.");
                     Console.WriteLine("Edit alarm snooze period, type 'snooze'.");
-                    Console.WriteLine("To enable/disable the alarm , type 'settings'.");
+                    Console.WriteLine("To enable/disable the alarm , type 'status'.");
                     Console.WriteLine("If you are done, type 'done'.");
                     Console.Write("Input here: ");
 
                     input = (Console.ReadLine() ?? "").ToLower();
+
                     switch (input)
                     {
                         case "time":
@@ -282,7 +293,7 @@ namespace Alarm501_Console
                         case "snooze":
                             snoozePeriod = ReturnAlarmSnoozePeriod();
                             break;
-                        case "settings":
+                        case "status":
                             enabled = ReturnAlarmEnabled();
                             break;
                         case "done":
@@ -299,6 +310,8 @@ namespace Alarm501_Console
 
         private TimeSpan ReturnAlarmTime()
         {
+            // TODO: User must be able to input time in a 12 hour format 
+
             Console.Write("Enter in the hour the alarm should be set off (in 24 hour format. 18 = 6PM. 6 = 6AM).\nEnter here: ");
             int hour;
             while (!int.TryParse(Console.ReadLine(), out hour) || hour > 24 || hour < 0)
@@ -327,9 +340,9 @@ namespace Alarm501_Console
             // TODO: Add input validation so that only a string of 7 letters is accepted.
             int index;
             bool[] schedule = new bool[7];
-            Console.Write("Enter in the days you want the alarm to be active for. Example(FTFFFFF) for only Monday active.\nEnter here: ");
+            Console.Write("Enter in the days you want the alarm to be active for. Example (FTFFFFF) for only Monday active.\nEnter here: ");
             string scheduleInput = Console.ReadLine() ?? "";
-            while (scheduleInput.Length == 0 || scheduleInput.Length > 7)
+            while (scheduleInput.Length != 7)
             {
                 Console.Write("Invalid input, try again Example (FTFFFFF).\nEnter here: ");
                 scheduleInput = Console.ReadLine() ?? "";
@@ -413,12 +426,20 @@ namespace Alarm501_Console
 
         private uint ReturnAlarmSnoozePeriod()
         {
-            Console.Write("Enter in the snooze period in minutes from 1 - 30.\nEnter here: ");
-            uint snoozePeriod = uint.Parse(Console.ReadLine() ?? "");
+            uint snoozePeriod = 0;
+            Console.Write("\nEnter in the snooze period in minutes from 1 - 30.\nEnter here: ");
+
+            string input = Console.ReadLine() ?? "";
+            if (input == "") snoozePeriod = 0;
+            else snoozePeriod = uint.Parse(input);
+
             while (snoozePeriod < 1 || snoozePeriod > 30)
             {
-                Console.Write("Invalid input, please try again from 1 - 30 minutes.\nEnter here: ");
-                snoozePeriod = uint.Parse(Console.ReadLine() ?? "");
+                Console.Write("\nInvalid input, please try again from 1 - 30 minutes.\nEnter here: ");
+
+                input = Console.ReadLine() ?? "";
+                if (input == "") snoozePeriod = 0;
+                else snoozePeriod = uint.Parse(input);
             }
             return snoozePeriod;
         }
