@@ -80,7 +80,7 @@ namespace Alarm501_Console
 
             Console.WriteLine("Type 'help' to get instructions for the console.");
 
-            Console.WriteLine("Type 'exit' to fully exit the program.\n");
+            Console.WriteLine("Type 'exit' to fully exit and save the program.\n");
         }
         
         /// <summary>
@@ -242,7 +242,7 @@ namespace Alarm501_Console
         /// <param name="msg">the msg for the alarm going off</param>
         public void UpdateAlarmListHandler(string[] alarms , string msg)
         {
-            Console.WriteLine("+--------------------------------+");
+            Console.WriteLine("\n+--------------------------------+");
             Console.WriteLine("| This is the current alarm list |");
             Console.WriteLine("+--------------------------------+");
             for (int i = 0; i < alarms.Length; i++)
@@ -344,11 +344,13 @@ namespace Alarm501_Console
                 Console.Write("Please enter 'AM' or 'PM'\nEnter here: ");
                 meridiem = Console.ReadLine() ?? "";
             }
+
+            
             if (meridiem.ToLower().Equals("pm"))
             {
-                hour = hour * 2;
+                hour += 12;
             }
-
+            
             Console.Write("Enter in the minute the alarm should be set off.\nEnter here: ");
             int minute;
             while (!int.TryParse(Console.ReadLine(), out minute) || minute > 60 || minute < 0)
