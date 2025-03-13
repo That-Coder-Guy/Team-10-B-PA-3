@@ -92,8 +92,7 @@ namespace Alarm501_MC
             {
                 DisableAlarmCreationDelegate?.Invoke();
             }
-              UpdateAlarmListDelegate?.Invoke(_model.AlarmsToStrings());
-           // UpdateAlarmListDelegate(_model.AlarmsToStrings());
+            UpdateAlarmListDelegate?.Invoke(_model.AlarmsToStrings());
         }
         
         public void ApplicationExitHandler()

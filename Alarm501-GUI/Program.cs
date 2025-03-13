@@ -1,6 +1,4 @@
 using Alarm501_MC;
-using System;
-using System.Windows.Forms;
 
 namespace Alarm501_GUI
 {

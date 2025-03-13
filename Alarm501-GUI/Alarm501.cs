@@ -50,7 +50,7 @@ namespace Alarm501_GUI
             uxAlarmList.Items.AddRange(alarmStrings);
         }
         
-        // TODO: Refactor this method signature to only take in a bool and an Alarm
+
         public void ModifyAlarmDetailsHandler(int index, TimeSpan time, bool[] schedule, AlarmSound sound, uint snoozePeriod, bool enabled)
         {
             AddEditAlarm addEditAlarm = new AddEditAlarm(index, time, schedule, sound, snoozePeriod, enabled);

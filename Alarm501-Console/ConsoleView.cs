@@ -80,7 +80,7 @@ namespace Alarm501_Console
 
             Console.WriteLine("Type 'help' to get instructions for the console.");
 
-            Console.WriteLine("Type 'exit' to fully exit the program, \n");
+            Console.WriteLine("Type 'exit' to fully exit the program.\n");
         }
         
         /// <summary>
@@ -152,6 +152,9 @@ namespace Alarm501_Console
             }
         }
 
+        /// <summary>
+        /// selects the index to edit the alarm at
+        /// </summary>
         public void EditAlarmInstructions()
         {
             Console.Write("Enter the Index You Would Like to Edit: ");
@@ -202,17 +205,19 @@ namespace Alarm501_Console
             _snoozeAlarmDelegate();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="message"></param>
         public void ShowAlarmSoundedHandler(string message)
         {
-            // throw new NotImplementedException();
-            /*Console.WriteLine("\n-------------------------------");
-            Console.WriteLine("This is the current alam list:\n");
-            Console.WriteLine("-------------------------------");
-            UpdateAlarmListHandler(lastList);
-            Console.WriteLine(message);*/
             UpdateAlarmListHandler(lastList, message);
         }
 
+        /// <summary>
+        /// displays and updates alarms at the begining
+        /// </summary>
+        /// <param name="alarms">the list of alarms</param>
         public void UpdateAlarmListHandler(string[] alarms)
         {
             Console.WriteLine("+--------------------------------+");
@@ -220,7 +225,6 @@ namespace Alarm501_Console
             Console.WriteLine("+--------------------------------+");
             for (int i = 0; i < alarms.Length; i++)
             {
-                //34 characters long  Make sure you accounted for the #s
                 string alarm = $"| {i + 1}) {alarms[i]}";
                 Console.Write($"| {i + 1}) {alarms[i]}");
                 Console.Write(new string(' ', 33 - alarm.Length));
@@ -231,6 +235,11 @@ namespace Alarm501_Console
             Array.Copy(alarms, lastList, alarms.Length);
         }
 
+        /// <summary>
+        /// Updating the alarm list
+        /// </summary>
+        /// <param name="alarms">the list of alarms</param>
+        /// <param name="msg">the msg for the alarm going off</param>
         public void UpdateAlarmListHandler(string[] alarms , string msg)
         {
             Console.WriteLine("+--------------------------------+");
@@ -238,7 +247,6 @@ namespace Alarm501_Console
             Console.WriteLine("+--------------------------------+");
             for (int i = 0; i < alarms.Length; i++)
             {
-                //34 characters long  Make sure you accounted for the #s
                 string alarm = $"| {i + 1}) {alarms[i]}";
                 Console.Write($"| {i + 1}) {alarms[i]}");
                 Console.Write(new string(' ', 33 - alarm.Length));
@@ -251,11 +259,23 @@ namespace Alarm501_Console
             Console.Write("\nInput alarm instruction: ");
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void DisableAlarmCreationHandler()
         {
             _maxAlarms = true;
         }
 
+        /// <summary>
+        /// Calls the modifying alarm handler
+        /// </summary>
+        /// <param name="index">the alarm index to edit</param>
+        /// <param name="time">the time to set the alarm for</param>
+        /// <param name="schedule">the schedule for the alarm</param>
+        /// <param name="sound">the sound for the alarm</param>
+        /// <param name="snoozePeriod">the amount of time to snooze the alarm for</param>
+        /// <param name="enabled">if the alarm is enabled or not</param>
         public void ModifyAlarmDetailsHandler(int index, TimeSpan time, bool[] schedule, AlarmSound sound, uint snoozePeriod, bool enabled)
         {
             if (index >= 0) {
@@ -303,15 +323,30 @@ namespace Alarm501_Console
             }
         }
 
+        /// <summary>
+        /// Returns the timespan for the alarm time
+        /// </summary>
+        /// <returns> Returns a timespan  </returns>
         private TimeSpan ReturnAlarmTime()
         {
-            // TODO: User must be able to input time in a 12 hour format 
-
-            Console.Write("Enter in the hour the alarm should be set off (in 24 hour format. 18 = 6PM. 6 = 6AM).\nEnter here: ");
+            Console.Write("Enter in the hour the alarm should be set off (in 12 hour format. 1-12 ).\nEnter here: ");
             int hour;
-            while (!int.TryParse(Console.ReadLine(), out hour) || hour > 24 || hour < 0)
+            while (!int.TryParse(Console.ReadLine(), out hour) || hour > 12 || hour < 1)
             {
                 Console.Write("Invalid input. Please enter a valid hour: ");
+            }
+
+            Console.Write("Please enter if the alarm should be 'AM' or 'PM'\nEnter here: ");
+            string meridiem = Console.ReadLine() ?? "";
+            while ((!meridiem.ToLower().Equals("am")) && (!meridiem.ToLower().Equals("pm")))
+            {
+
+                Console.Write("Please enter 'AM' or 'PM'\nEnter here: ");
+                meridiem = Console.ReadLine() ?? "";
+            }
+            if (meridiem.ToLower().Equals("pm"))
+            {
+                hour = hour * 2;
             }
 
             Console.Write("Enter in the minute the alarm should be set off.\nEnter here: ");
@@ -330,20 +365,24 @@ namespace Alarm501_Console
             return new TimeSpan(hour, minute, second);
         }
 
+        /// <summary>
+        /// returns a bool array for what the user wants to enter 
+        /// </summary>
+        /// <returns>A bool array for what is happenigng<returns>
         private bool[] ReturnAlarmSchedule()
         {
-            // TODO: Add input validation so that only a string of 7 letters is accepted.
             int index;
             bool[] schedule = new bool[7];
             Console.Write("Enter in the days you want the alarm to be active for. Example (FTFFFFF) for only Monday active.\nEnter here: ");
-            string scheduleInput = Console.ReadLine() ?? "";
-            while (scheduleInput.Length != 7)
+            string scheduleInput = (Console.ReadLine() ?? "").ToUpper();
+            while (scheduleInput.Length != 7 || !scheduleInput.All(c => c == 'T' || c == 'F'))
             {
-                Console.Write("Invalid input, try again Example (FTFFFFF).\nEnter here: ");
-                scheduleInput = Console.ReadLine() ?? "";
+                Console.Write("Invalid input, try again. Example (FTFFFFF).\nEnter here: ");
+                scheduleInput = (Console.ReadLine() ?? "").ToUpper();
+                
             }
             index = 0;
-            foreach (char c in scheduleInput.ToUpper())
+            foreach (char c in scheduleInput)
             {
                 if (c == 'T')
                 {
@@ -358,6 +397,10 @@ namespace Alarm501_Console
             return schedule;
         }
 
+        /// <summary>
+        /// Returns the sound that the User wants to use
+        /// </summary>
+        /// <returns>the alarm enumeration sound</returns>
         private AlarmSound ReturnAlarmSound()
         {
             Console.WriteLine("Please input what sound you want from the following list.");
@@ -375,86 +418,67 @@ namespace Alarm501_Console
             }
 
             return alarmSound;
-
-            /*
-            string[] sounds = new string[6];
-            int index = 0;
-            Console.Write("Please input what sound you want from the following list in exact type case..\n");
-            foreach (AlarmSound s in Enum.GetValues(typeof(AlarmSound)))
-            {
-                Console.WriteLine(s.ToString());
-                sounds[index] = s.ToString();
-                index++;
-            }
-            Console.Write("\nEnter here: ");
-            string sound = Console.ReadLine() ?? "";
-            while (sound.Length == 0 || !sounds.Contains(sound))
-            {
-                Console.Write("Invalid input, try again from the list\nEnter here: ");
-                sound = Console.ReadLine() ?? "";
-            }
-            AlarmSound alarmSound = AlarmSound.Radar;
-            switch (sound)
-            {
-                case "Radar":
-                    alarmSound = AlarmSound.Radar;
-                    break;
-                case "Beacon":
-                    alarmSound = AlarmSound.Beacon;
-                    break;
-                case "Chimes":
-                    alarmSound = AlarmSound.Chimes;
-                    break;
-                case "Circuit":
-                    alarmSound = AlarmSound.Circuit;
-                    break;
-                case "Reflection":
-                    alarmSound = AlarmSound.Reflection;
-                    break;
-                case "NoSound":
-                    alarmSound = AlarmSound.NoSound;
-                    break;
-            }
-            return alarmSound;
-            */
         }
 
+        /// <summary>
+        /// Returns the amount of time the alarm should snooze for
+        /// </summary>
+        /// <returns>returns a uint for snooze time in min</returns>
         private uint ReturnAlarmSnoozePeriod()
         {
             uint snoozePeriod = 0;
-            Console.Write("\nEnter in the snooze period in minutes from 1 - 30.\nEnter here: ");
+            Console.Write("\nEnter in the snooze period in minutes from 1 - 30 .\nEnter here: ");
 
             string input = Console.ReadLine() ?? "";
-            if (input == "") snoozePeriod = 0;
-            else snoozePeriod = uint.Parse(input);
+            if (input == "")
+            {
+                snoozePeriod = 0;
+            }
+            else
+            {
+                snoozePeriod = uint.Parse(input);
+            }
 
             while (snoozePeriod < 1 || snoozePeriod > 30)
             {
-                Console.Write("\nInvalid input, please try again from 1 - 30 minutes.\nEnter here: ");
+                Console.Write("\nInvalid input, please try again from 1 - 30.\nEnter here: ");
 
                 input = Console.ReadLine() ?? "";
-                if (input == "") snoozePeriod = 0;
-                else snoozePeriod = uint.Parse(input);
+                if (input == "")
+                {
+                    snoozePeriod = 0;
+                }
+                else
+                {
+                    snoozePeriod = uint.Parse(input);
+                }
             }
             return snoozePeriod;
         }
-
+        
+        /// <summary>
+        /// Runs the code to get if the alarm should be enabled or not
+        /// </summary>
+        /// <returns>returns a bool if it is enable</returns>
         private bool ReturnAlarmEnabled()
         {
-            string enabled;
+            
             Console.Write("Do you want this alarm to be enabled? (Y/N): ");
-            enabled = Console.ReadLine() ?? "";
-            while (enabled.ToUpper() != "Y" && enabled.ToUpper() != "N")
+            string input = Console.ReadLine() ?? "";
+            while (input.ToUpper() != "Y" && input.ToUpper() != "N")
             {
                 Console.Write("Invalid input, try again. (Y/N): ");
-                enabled = Console.ReadLine() ?? "";
+                input = Console.ReadLine() ?? "";
             }
             bool alarmEnabled;
-            if (enabled.ToUpper() == "Y") { alarmEnabled = true; }
+            if (input.ToUpper() == "Y") { alarmEnabled = true; }
             else { alarmEnabled = false; }
             return alarmEnabled;
         }
 
+        /// <summary>
+        /// calls the controllers startup delegate
+        /// </summary>
         public void ApplicationStartup()
         {
             _applicationStartDelegate();
