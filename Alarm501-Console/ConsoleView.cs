@@ -84,7 +84,7 @@ namespace Alarm501_Console
         }
         
         /// <summary>
-        /// Waits for the user to input a command
+        /// Waits for the user to input a command.
         /// </summary>
         public string AwaitUserInput()
         {
@@ -407,6 +407,7 @@ namespace Alarm501_Console
         {
             Console.WriteLine("Please input what sound you want from the following list.");
             List<string> soundNames = Enum.GetNames<AlarmSound>().ToList();
+            Console.WriteLine();
             soundNames.ForEach(Console.WriteLine);
 
             Console.Write("\nEnter here: ");
