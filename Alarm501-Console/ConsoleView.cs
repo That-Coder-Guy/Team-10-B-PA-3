@@ -329,7 +329,7 @@ namespace Alarm501_Console
         /// <returns> Returns a timespan  </returns>
         private TimeSpan ReturnAlarmTime()
         {
-            Console.Write("Enter in the hour the alarm should be set off (in 12 hour format. 1-12 ).\nEnter here: ");
+            Console.Write("Enter in the hour the alarm should be set off (in 12 hour format -> 1-12).\nEnter here: ");
             int hour;
             while (!int.TryParse(Console.ReadLine(), out hour) || hour > 12 || hour < 1)
             {
@@ -377,7 +377,7 @@ namespace Alarm501_Console
             string scheduleInput = (Console.ReadLine() ?? "").ToUpper();
             while (scheduleInput.Length != 7 || !scheduleInput.All(c => c == 'T' || c == 'F'))
             {
-                Console.Write("Invalid input, try again. Example (FTFFFFF).\nEnter here: ");
+                Console.Write("Invalid input, try again. Example (FTFFFFF) for only Monday active.\nEnter here: ");
                 scheduleInput = (Console.ReadLine() ?? "").ToUpper();
                 
             }
@@ -427,7 +427,7 @@ namespace Alarm501_Console
         private uint ReturnAlarmSnoozePeriod()
         {
             uint snoozePeriod = 0;
-            Console.Write("\nEnter in the snooze period in minutes from 1 - 30 .\nEnter here: ");
+            Console.Write("\nEnter in the snooze period in minutes from 1 - 30.\nEnter here: ");
 
             string input = Console.ReadLine() ?? "";
             if (input == "")
